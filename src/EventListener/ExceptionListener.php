@@ -54,6 +54,13 @@ class ExceptionListener
                 $event->setResponse($response);
                 return;
             }
+
+            if ($code == 404 && str_starts_with($path, "/admin")) {
+                // redirect to dashboard if any admin route is not found
+                $response = new RedirectResponse('/admin/dashboard');
+                $event->setResponse($response);
+                return;
+            }
             
             $response->setStatusCode($exception->getStatusCode());
             $response->headers->replace($exception->getHeaders());

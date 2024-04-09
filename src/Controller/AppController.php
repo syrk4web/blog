@@ -9,6 +9,7 @@ use Symfony\Component\Routing\Attribute\Route;
 // Allow additionnal methods like rendering template, redirect, generate url...
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class AppController extends AbstractController
 {
@@ -28,7 +29,7 @@ class AppController extends AbstractController
     {
         $article_data = [];
         if ($article) {
-            $article_data = ["title" => $article->getTitle(), "date" => date('m/d/Y',$article->getDate()), "content" => $article->getContent()];
+            $article_data = ["title" => $article->getTitle(), "date" => $article->getDate(), "content" => $article->getContent()];
             $logger->info('Article data', $article_data);
         }
         // Articles
@@ -36,7 +37,7 @@ class AppController extends AbstractController
         $articles_data = [];
         foreach ($articles as $article) {
             // append to article_data
-            $articles_data[] = ["id" => $article->getId(), "title" => $article->getTitle(), "date" => date('m/d/Y', $article->getDate()), "content" => $article->getContent()];
+            $articles_data[] = ["id" => $article->getId(), "title" => $article->getTitle(), "date" => $article->getDate(), "content" => $article->getContent()];
         } 
 
         return $this->render('blog_article.html.twig', [
@@ -55,10 +56,28 @@ class AppController extends AbstractController
         $articles_data = [];
         foreach ($articles as $article) {
             // append to article_data
-            $articles_data[] = ["id" => $article->getId(), "title" => $article->getTitle(), "date" => date('m/d/Y', $article->getDate()), "content" => $article->getContent()];
+            $articles_data[] = ["id" => $article->getId(), "title" => $article->getTitle(), "date" => $article->getDate(), "content" => $article->getContent()];
         } 
         return $this->render('blog.html.twig', ['articles' => $articles_data]);
 
+    }
+
+    
+    #[Route(path: '/login', name: 'app_login')]
+    public function login(AuthenticationUtils $authenticationUtils): Response
+    {
+        // Case already logged in, redirect to dashboard
+        if ($this->getUser()) {
+            return $this->redirectToRoute('admin_dashboard');
+        }
+        // Else show login form
+        
+        // get the login error if there is one
+        $error = $authenticationUtils->getLastAuthenticationError();
+        // last username entered by the user
+        $lastUsername = $authenticationUtils->getLastUsername();
+
+        return $this->render('login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 
     #[Route(path: '/logout', name: 'app_logout')]

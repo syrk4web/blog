@@ -11,15 +11,13 @@ security:
         property: username
   firewalls:
     # Need to be set before the main firewall because file is read from top to bottom
-    admin:
+    main:
       # To check user credentials, we use the app_user_provider
       provider: app_user_provider
       # Similar to rate limit for auth
       login_throttling:
         max_attempts: 3
         interval: "15 minutes"
-      # every URL that starts with /admin is under the "admin" firewall rules
-      pattern: ^/admin/.*$
       # The auth logic to authenticate the user
       custom_authenticator: App\Security\LoginFormAuthenticator
       # The entry point is the route that the user will be redirected to
@@ -39,15 +37,6 @@ security:
     dev:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
       security: false
-    main:
-      lazy: true
-      provider: app_user_provider
-      custom_authenticator: App\Security\LoginFormAuthenticator
-      logout:
-        path: app_logout
-        target: app_login
-        # where to redirect after logout
-        # target: app_any_route
 
       # activate different ways to authenticate
       # https://symfony.com/doc/current/security.html#the-firewall
@@ -57,7 +46,6 @@ security:
   # Easy way to control access for large sections of your site
   # Note: Only the *first* access control that matches will be used
   access_control:
-    - { path: ^/admin/login, roles: PUBLIC_ACCESS }
     - { path: ^/admin, roles: ROLE_ADMIN }
 
 when@test:
