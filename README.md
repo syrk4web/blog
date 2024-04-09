@@ -29,3 +29,17 @@ Try to reset your database :
 ### App not rendering well / no file update
 
 Try to clear cache using `php bin/console c:c` or `php bin/console clear:cache`.
+
+### App once run well but not working now
+
+It's possible that the application didn't stop properly the first time and that a worker is still running.
+
+Try the following :
+ - `symfony server:stop`
+ - `symfony server:start`
+
+### Logging is not working
+
+You can try to make app more verbose using `-v`, `-vv` or `-vvv` (multiple logs level) when starting server.
+
+Example : `symfony server:start -vvv` 
