@@ -1,0 +1,13 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Login page{% endblock %}
+{% block title_header %}Login{% endblock %}
+
+{% block content %}
+
+<main style="min-height: 75vh" class="container">
+    <h1>Create new Article</h1>
+
+    {{ include('admin_article/_form.html.twig') }}
+</main>
+{% endblock content %}

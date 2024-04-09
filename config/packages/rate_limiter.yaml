@@ -1,0 +1,9 @@
+framework:
+  rate_limiter:
+    login:
+      # here window start at first hit and end after delay
+      # "token_bucket" define a number scale on server resources
+      # "sliding_window" is moving window
+      policy: "fixed_window"
+      limit: 50 # per minute ...
+      interval: "15 minutes" # ... or in a custom period

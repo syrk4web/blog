@@ -1,0 +1,9 @@
+{% extends "base.html.twig" %}
+{% block title %}Admin dashboard page{% endblock %}
+{% block title_header %}Admin dashboard{% endblock %}
+{% block content %}
+<main style="min-height: 75vh" class="container">
+    <h1>DASHBOARD</h1>
+    <a class="btn btn-info" href="{{ path('app_admin_article_index') }}">Manage articles</a>
+</main>
+{% endblock content %}

@@ -1,0 +1,30 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Home page{% endblock %}
+{% block title_header %}Home{% endblock %}
+
+{% block content %}
+
+<main style="min-height: 75vh" class="container">
+  <div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
+    <div class="px-0">
+      <h1 class="display-4 fst-italic">Welcome to my awesome blog</h1>
+    </div>
+  </div>
+
+  <div class="my-4">
+      <h2 class="display-5 link-body-emphasis mb-1">Presentation</h2>
+      <hr>
+      <p class="lead">My new blog is available here!</p>
+      <p class="lead">
+        If you want to keep up to date with what's going on in the world, particularly in terms of new technologies, you've come to the right place.</p>
+      <p class="lead">
+        As an IT developer myself, I'm well versed in the field, so not only do I report the information I find, but I also give a critical opinion on the advances and technologies presented in my blog.</p>
+        
+      <p class="display-6"> Start looking at my articles now !</p>
+        <a class="btn btn-lg btn-secondary" href="/blog">ACCESS BLOG</a>
+
+      </p>
+  </div>
+</main>
+{% endblock content %}
