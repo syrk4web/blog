@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
 class Article
@@ -76,5 +78,38 @@ class Article
         $this->user = $user;
 
         return $this;
+    }
+    
+    public static function loadValidatorMetadata(ClassMetadata $metadata): void
+    {
+        $title_regex = '/^.{8,}$/';
+        $title_msg = 'Title must be at least 8 characters long';
+        $metadata->addPropertyConstraints('title', [
+            new Assert\NotBlank(),
+            new Assert\Regex([
+                'pattern' => $title_regex,
+                'message' => $title_msg
+            ])
+        ]);
+    
+        $date_regex = '/^\d{2}\/\d{2}\/\d{4}$/';
+        $date_msg = 'Date must be in the format dd/mm/yyyy';
+        $metadata->addPropertyConstraints('date', [
+            new Assert\NotBlank(),
+            new Assert\Regex([
+                'pattern'=> $date_regex,
+                'message'=> $date_msg
+            ])
+        ]);
+
+        $content_regex = '/^.{20,200}$/';
+        $content_msg = 'Content must be between 20 and 200 characters long';
+        $metadata->addPropertyConstraints('content', [
+            new Assert\NotBlank(),
+            new Assert\Regex([
+                'pattern'=> $content_regex,
+                'message'=> $content_msg
+            ])
+        ]);
     }
 }
