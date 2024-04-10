@@ -7,3 +7,8 @@ framework:
       policy: "fixed_window"
       limit: 50 # per minute ...
       interval: "15 minutes" # ... or in a custom period
+    # add rate limit for schedule
+    messenger:
+      policy: "fixed_window"
+      limit: 10
+      interval: "1 minute"
