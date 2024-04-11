@@ -7,9 +7,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Component\Console\Input\StringInput;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Console\Output\BufferedOutput;
 
 // Metadata
 #[AsCommand(

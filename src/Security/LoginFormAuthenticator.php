@@ -46,13 +46,12 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         }
 
         // Redirect check user role
-        $roles = $token->getRoleNames();
+        $roles = $token->getUser()->getRoles();
         if (in_array('ROLE_ADMIN', $roles)) {
             return new RedirectResponse($this->urlGenerator->generate('admin_dashboard'));
-        }
-         
-        // return new RedirectResponse($this->urlGenerator->generate('home'));
-        
+        } else {
+            return new RedirectResponse($this->urlGenerator->generate('home'));
+        }        
     }
 
     protected function getLoginUrl(Request $request): string

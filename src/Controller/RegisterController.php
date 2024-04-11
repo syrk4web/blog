@@ -23,16 +23,16 @@ class RegisterController extends AbstractController
     public function register_admin(string $username, string $password, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher, ValidatorInterface $validator): Response
     {
         // Reset users
-        $users = $entityManager->getRepository(User::class)->findAll();
-        foreach ($users as $user) {
-            $entityManager->remove($user);
-            $entityManager->flush();
-        }
+        //$users = $entityManager->getRepository(User::class)->findAll();
+        //foreach ($users as $user) {
+        //    $entityManager->remove($user);
+        //    $entityManager->flush();
+        //}
 
         // Check if already one user at least
         $users = $entityManager->getRepository(User::class)->findAll();
         if (count($users) != 0) {
-         return new Response('User already exists');
+         return new Response('User already exists', 403);
         } 
 
         // Case no user, create one
@@ -43,7 +43,7 @@ class RegisterController extends AbstractController
         // Check if valid after setting values and before hash
         $errors = $validator->validate($admin);
         if (count($errors) > 0) {
-        return new Response((string) $errors, 400);
+        return new Response((string) $errors, 403);
         }
         $hashedPassword = $passwordHasher->hashPassword(
         $admin,
@@ -57,6 +57,6 @@ class RegisterController extends AbstractController
         // actually executes the queries (i.e. the INSERT query)
         $entityManager->flush();
         // Return a response with the article data
-        return new Response('Registered');
+        return new Response('Registered', 200);
     }
 }
