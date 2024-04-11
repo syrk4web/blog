@@ -7,9 +7,8 @@ use Symfony\Component\Scheduler\Schedule;
 use Symfony\Component\Scheduler\ScheduleProviderInterface;
 use Symfony\Component\Scheduler\RecurringMessage;
 use App\Scheduler\Message\SendUserStats;
+use App\Scheduler\Message\SendArticleStats;
 
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Scheduler\Event\PreRunEvent;
 
 use Psr\Log\LoggerInterface;
 // Name is used when executing scheduler
@@ -21,6 +20,7 @@ class StatsScheduler implements ScheduleProviderInterface
     public function __construct(private LoggerInterface $logger)
     {
     }
+    
     public function getSchedule(): Schedule
     {
         // New schedule create a background task
@@ -28,21 +28,8 @@ class StatsScheduler implements ScheduleProviderInterface
             // Every 5 seconds, we send user stats
             RecurringMessage::every('5 seconds', new SendUserStats()),
             // We can add more tasks here
-            // RecurringMessage::every(<time>, new MyMessage()),
+            RecurringMessage::every('10 seconds', new SendArticleStats()),
         );
         return $scheduler;
     }
-
-    public function onMessage(PreRunEvent $event): void
-    {
-    $schedule = $event->getSchedule();
-    $context = $event->getMessageContext();
-    $message = $event->getMessage();
-
-    // do something with the schedule, context or message
-
-    // and/or cancel message
-    // $event->shouldCancel(true);
-    }
-
 }
