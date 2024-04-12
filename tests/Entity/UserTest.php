@@ -1,6 +1,6 @@
 <?php
-// tests/Entyty/UserTest.php
-namespace App\Tests\Form\Type;
+
+namespace App\Tests\Entity;
 
 use App\Entity\User;
 use Symfony\Component\Form\Test\TypeTestCase;
@@ -8,25 +8,33 @@ use Symfony\Component\Validator\Validation;
 
 class UserTest extends TypeTestCase
 {
-    /** @test */
-    public function invalidPassword(): void
+    public function testInvalidType()
     {
-        $user = new User();
-        // get User entity function loadValidatorMetadata to validate
-        $validator = Validation::createValidatorBuilder()->addMethodMapping('loadValidatorMetadata')->getValidator();
-        // get pair of username and password to validate using loop
+        $validator = Validation::createValidatorBuilder()
+        ->addMethodMapping('loadValidatorMetadata')
+        ->getValidator();
+
         $data = [
-            ['username' => 'admin', 'password' => 'admin'],
-            ['username' => 'admin', 'password' => '<pddzS4'],
-            ['username' => 'admin', 'password' => 'abc'],
-            ['username' => 'admin', 'password' => '123'],
+            // Case username valid but password invalid
+            ['username' => 'admin', 'password' => 'add'],
+            // Case username invalid but password valid
+            ['username' => 'a', 'password' => 'P@ssw0rd'],
+            // Case username valid but password invalid
+            ['username' => 'admin', 'password' => '<>desd^fesfAb'],
+            // Case username invalid but password invalid
+            ['username' => 'a', 'password' => '<>desd^fesfAb'],
+            // Adding this return failure because it is valid
+            //['username' => 'admin', 'password' => 'P@ssw0rd'],
         ];
-        // loop to validate
+        // Loop over data
         foreach ($data as $value) {
+            $user = new User();
             $user->setUsername($value['username']);
             $user->setPassword($value['password']);
             $errors = $validator->validate($user);
-            $this->assertCount(1, $errors);
-        }             
+            // check if at least one error
+            $this->assertNotEquals(0, count($errors));
+
+        }
     }
 }
